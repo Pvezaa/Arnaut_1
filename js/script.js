@@ -81,7 +81,8 @@ const renderHeader = () => `
             
           </div>
         </nav>
-      </header>`;
+      </header>
+      `;
 const renderFooter = () => `
       <footer>
         <div class="container-fluid foot">
@@ -118,7 +119,7 @@ const renderMenu = () =>`
                 role="button"
                 aria-expanded="false"
                 aria-controls="Category"
-                >Меню</a
+                > <i class="bi bi-chevron-down"></i>Меню</a
               >
             </h1>
             <!-- Сюда динамически подгружать категории -->
@@ -254,6 +255,12 @@ const renderTitle = () =>`
         </p>
         <button class="ourmenu"><a href="#menu">Наше Меню</a></button>
       </div>
+      <div class="aboutourgroup container-fluid">
+        <div class="commantname">Наша Команда</div>
+        <div class="command-img">
+          <img src="./img/Наша-команда.jpg" alt="Наша Команда">
+        </div>
+      </div>
       </section>
 `
 const renderItem= (onlyItem=[]) =>`
@@ -371,7 +378,7 @@ async function fetchMenuItems(categoryIds) {
             <div class="send-plus-min">
               <div class="plus-min">
                 <p class="min"><i class="bx bx-minus-circle"></i></p>
-                <input type="number" value="1" maxlength="2" min="0" />
+                <input type="number" value="1" maxlength="2" min="0" disabled/>
                 <p class="plus"><i class="bx bx-plus-circle"></i></p>
               </div>
               <button class="send"><i class="bx bx-dish"></i> <i class='bx bx-check'></i></button>
@@ -587,7 +594,7 @@ async function Hachchange(){
   document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
   const hash = window.location.hash;
   if(!hash){
-    menusect.innerHTML=renderTitle();
+    menusect.innerHTML=renderTitle()+renderFooter();
     
 document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
   }
@@ -684,7 +691,7 @@ document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
   else if(hash==='#about'){
     document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
     document.querySelector('body').classList.add('bodyc');
-    document.querySelector('header').style.backgroundColor='';
+
     menusect.innerHTML='';
     menusect.innerHTML=renderTitle()+renderFooter();
     // Добавляем обработчик события клика по документу

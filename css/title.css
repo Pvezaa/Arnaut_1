@@ -9,7 +9,7 @@ body{
 }
 .aboutmenu {
   width: 100%;
-  height: auto;
+  height:auto;
 }
 .aboutmenu header{
   position: relative !important;
@@ -325,6 +325,39 @@ padding: 10px;
   width: 100%;
   height: 100%;
 }
+.aboutourgroup{
+  margin-top: 100px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.commantname{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:rgba(0, 0, 0, 0.337);
+  color: #fff;
+  width: 100%;
+  height: 100px;
+  margin-bottom: 100px;
+  font-family: "Kurale", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(1.6rem, 2.5vw, 3.8rem);
+}
+.command-img{
+  width: 34%;
+  height: auto;
+}
+.command-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+input{
+  color: #000000;
+}
 @media (min-width: 992px) {
   .item-name {
     font-size: clamp(2.1rem, 5.5vw, 7vw);
@@ -367,5 +400,11 @@ padding: 10px;
     font-weight: 400;
     font-style: normal;
     
+  }
+}
+@media (min-height:1200px) {
+  .aboutmenu {
+    width: 100%;
+    height:1200px;
   }
 }

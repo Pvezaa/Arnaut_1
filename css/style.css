@@ -30,13 +30,20 @@ header {
   z-index: 1000; /* Чтобы меню отображалось поверх других элементов */
   background-color: #fff !important;
 }
-
+.dropdown-toggle::after{
+  color: #fff;
+}
 .category-content {
   max-width: 100%; /* Элементы не превышают ширину экрана */
   overflow-x: hidden; /* Запрещает содержимому выходить за пределы */
-}
-.category-content {
   margin-top: 40px;
+}
+
+.category-content i::before{
+  opacity: 0;
+  font-size: 1.6rem; /* Увеличиваем размер иконки */
+  transform: rotate(-90deg); /* Поворот на 90 градусов */
+  transform-origin: center; /* Устанавливаем центр поворота */
 }
 /*logo*/
 .logo {
@@ -618,8 +625,20 @@ input[type="number"]::-webkit-inner-spin-button {
     margin-right: 40px;
   }
   .singin {
-    padding-right: 0;
+    padding-right: 10px;
   }
+  .category-content i::before{
+    opacity: 1;
+    font-size: 1.4rem; /* Увеличиваем размер иконки */
+    transform: rotate(-90deg); /* Поворот на 90 градусов */
+    transform-origin: center; /* Устанавливаем центр поворота */
+    transition: transform 0.5s ease;
+  }
+  .category-content .collapsed i::before{
+    transform: rotate(0deg);
+    transition: transform 0.5s ease;
+  }
+  
 }
 @media (min-width: 992px) {
   .buttonsing-1 {
@@ -637,7 +656,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 @media (max-width: 480px) {
   .logo {
-    font-size: 200% !important;
+    font-size: 190% !important;
   }
   .buttonsing-1 {
     display: block;
