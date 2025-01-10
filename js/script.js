@@ -301,6 +301,7 @@ function formatTime(inputTime) {
 // Получение данных категорий с сервера
 async function fetchProductTypes() {
   try {
+   
     const response = await fetch('http://localhost:9091/api/v1/product-types');
     const data = await response.json();
 
@@ -321,6 +322,10 @@ async function fetchProductTypes() {
       // После загрузки категорий загружаем меню
       const categoryIds = data.content.map(item => item.id); // Извлекаем IDs
       await fetchMenuItems(categoryIds);
+      setTimeout(function(){
+        document.querySelector('.containe').style.height = 'auto';
+      document.querySelector('.containe').style.opacity = '1';
+      }, 500)
     } else {
       console.error('Неверный формат данных:', data);
     }
@@ -592,10 +597,7 @@ document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
       menusect.innerHTML='';
       menusect.innerHTML=renderHeader()+renderMenu()+renderFooter();
       await fetchProductTypes();
-    setTimeout(function(){
-      document.querySelector('.containe').style.height = 'auto';
-    document.querySelector('.containe').style.opacity = '1';
-    }, 500)
+    
     
   console.log("Всё запущено");
   let order=JSON.parse(localStorage.getItem('order'));
