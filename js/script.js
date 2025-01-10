@@ -132,7 +132,7 @@ const renderMenu = () =>`
           </div>
         </div>
         <div class="row">
-          <div class="col-12 containe" style="height: 400px; opacity:0">
+          <div class="col-12 containe" style="height: 2000px; opacity:0">
             <div class="menu-container text-center col-sm-6 col-md-4 col-lg-4 container">
               <!-- Сюда будет загружаться меню -->
             </div>
@@ -686,7 +686,7 @@ document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
     document.querySelector('body').classList.add('bodyc');
     document.querySelector('header').style.backgroundColor='';
     menusect.innerHTML='';
-    menusect.innerHTML=renderTitle();
+    menusect.innerHTML=renderTitle()+renderFooter();
     // Добавляем обработчик события клика по документу
     document.addEventListener('click', function (e) {
       var navbarToggler = document.querySelector('.navbar-toggler'); // Кнопка меню

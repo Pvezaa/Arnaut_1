@@ -87,7 +87,7 @@ header {
 }
 
 .navbar-collapse.collapsing {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 .navbar-collapse.collapsing ul {
   gap: 0;
@@ -96,7 +96,7 @@ header {
   padding-top: 30px;
 }
 .navbar-collapse.show {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 .navbar-collapse.show ul {
   gap: 0;
@@ -105,7 +105,7 @@ header {
   padding-top: 30px;
 }
 .navbar-collapse.show li:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 /* Категории */
 .container-fluid.cat .row {
@@ -510,7 +510,6 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 @media (max-width: 770px) {
   .navcont .container-fluid ul {
-    background-color: #c41927;
     margin-left: auto;
     text-align: center;
     font-size: 1.5rem;
