@@ -371,6 +371,12 @@ input[type="number"]::-webkit-inner-spin-button {
     transform: translateY(0px);
   }
 }
+/* table itog cost */
+.itog-cost{
+  position: absolute;
+  right: 10px;
+  color: #686868;
+}
 /* Send button */
 .buttonsend {
   position: fixed;
@@ -604,6 +610,17 @@ input[type="number"]::-webkit-inner-spin-button {
   .menu-container {
     overflow: hidden;
   }
+  .category-content i::before{
+    opacity: 1;
+    font-size: 1.4rem; /* Увеличиваем размер иконки */
+    transform: rotate(0deg); /* Поворот на 90 градусов */
+    transform-origin: center; /* Устанавливаем центр поворота */
+    transition: transform 0.5s ease;
+  }
+  .category-content .collapsed i::before{
+    transform: rotate(-90deg);
+    transition: transform 0.5s ease;
+  }
 }
 @media (min-width: 768px) {
   #Category.collapse {
@@ -627,17 +644,7 @@ input[type="number"]::-webkit-inner-spin-button {
   .singin {
     padding-right: 10px;
   }
-  .category-content i::before{
-    opacity: 1;
-    font-size: 1.4rem; /* Увеличиваем размер иконки */
-    transform: rotate(-90deg); /* Поворот на 90 градусов */
-    transform-origin: center; /* Устанавливаем центр поворота */
-    transition: transform 0.5s ease;
-  }
-  .category-content .collapsed i::before{
-    transform: rotate(0deg);
-    transition: transform 0.5s ease;
-  }
+ 
   
 }
 @media (min-width: 992px) {

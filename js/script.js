@@ -404,6 +404,7 @@ function updateModal(order) {
   
   // Проверяем, что orderList не пустой
   if (order.length > 0) {
+    let totalcost=JSON.parse(localStorage.getItem('totalcost'));
     for (let i = 0; i < order.length; i++) {
       tbody.insertAdjacentHTML('beforeend', `
         <tr>
@@ -411,18 +412,27 @@ function updateModal(order) {
           <td style="text-align: center;">${order[i].tovarname}</td>
           <td style="text-align: center;">${order[i].price}</td>
           <td style="text-align: center;">${order[i].quantity}</td>
-          <td style="text-align: center;"><button class="delete btn btn-danger" data-delete="${order[i].id}"><i class='bx bx-trash-alt'></i></button></td>
+          <td style="text-align: center;"><button class="delete btn btn-danger" data-delete="${order[i].id}" data-price="${order[i].price}"><i class='bx bx-trash-alt'></i></button></td>
         </tr>
+        
       `);
+      
     }
-    
+    tbody.insertAdjacentHTML('beforeend', `
+      <br>
+      <h6 class="itog-cost">Всего: ${totalcost}<h6>
+      `);
     // Важно: добавляем обработчик события для кнопок удаления
     const deleteButtons = document.querySelectorAll(".delete");
     deleteButtons.forEach(button => {
       button.addEventListener("click", function (e) {
         // Получаем ID товара для удаления
         const itemId = e.target.closest("button").dataset.delete;
-        
+        const price = parseFloat(button.dataset.price);
+        console.log(price);
+        let totalcost=JSON.parse(localStorage.getItem('totalcost'));
+        totalcost-=price;
+        localStorage.setItem('totalcost', JSON.stringify(totalcost));
         // Обновляем заказ, удаляя элемент
         let order = JSON.parse(localStorage.getItem('order'));
         order = order.filter(item => item.id !== parseInt(itemId));
@@ -442,65 +452,7 @@ function updateModal(order) {
   }
 }
 
-// function initializeIsotope() {
-//   var $container = $('.menu-container');
- 
 
- 
-
-//   // Инициализация Isotope
-//   $container.isotope({
-//     filter: '*',
-//     layoutMode: 'masonry',
-//     masonry: {
-//       gutter: 170
-//     },
-//     animationOptions: {
-//       duration: 750,
-//       easing: 'linear',
-//       queue: false
-//     },
-//   });
-
-
-  
-//   // Таймер для проверки позиции элементов каждые 100 мс
-//   var checkInterval = setInterval(function() {
-//     $container.find('.item').each(function() {
-//       var currentPosition = $(this).css('position');
-//       if (currentPosition !== 'static') {
-//         // Если position не static, то принудительно устанавливаем position: static
-//         $(this).css('position', 'static');
-//       }
-//     });
-//   }, 100);  // Каждые 100 миллисекунд
-
-//   // Остановка таймера после того, как Isotope завершит свою работу
-//   $container.on('arrangeComplete', function() {
-//     // Останавливаем таймер, так как проверка больше не нужна
-//     clearInterval(checkInterval);
-//   });
-
-//   // Обработчик кликов по категориям
-//   $('.category-list a').on('click', function() {
-   
-//     $('.category-list .active').removeClass('active');
-//     $(this).addClass('active');
-//     var selector = $(this).attr('data-filter');
-//     $container.find(selector).css('visibility', 'hidden');
-//     // Перезапускаем фильтрацию элементов с анимацией
-//     $container.isotope({
-//       filter: selector,
-//       layoutMode: 'masonry',
-//       transitionDuration: '0.5s'
-//     });
-//     $container.on('arrangeComplete', function() {
-//       // Сделать элементы видимыми после того, как они были правильно расположены
-//       $container.find(selector).css('visibility', 'visible');
-//     });
-//     return false;
-//   });
-// }
 
 function initializeIsotope() {
   var $container = $('.menu-container');
@@ -601,9 +553,9 @@ document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
   if(hash==='#menu'){
     document.querySelector('body').style.backgroundImage="url(./img/flat-lay-composition-mexican-food-with-copyspace.jpg)";
     document.querySelector('body').classList.add('bodyc');
-      menusect.innerHTML='';
-      menusect.innerHTML=renderHeader()+renderMenu()+renderFooter();
-      await fetchProductTypes();
+    menusect.innerHTML='';
+    menusect.innerHTML=renderHeader()+renderMenu()+renderFooter();
+    await fetchProductTypes();
     
     
   console.log("Всё запущено");
