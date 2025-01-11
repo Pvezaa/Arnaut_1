@@ -25,8 +25,8 @@ async function fetchProductTypes() {
                         <th style="text-align: center;">Время готовки</th>
                         <th style="text-align: center;">Изображение</th>
                         <th class="allbuttons">
-                        <button class="delete btn btn-success" data-bs-toggle="modal" data-bs-target="#Modalwindow" ><i class='bx bx-book-add' ></i></button>
-                        <button class="delete category-delete  btn btn-danger" data-delete="${item.id}"><i class='bx bx-trash-alt'></i></button>
+                        <button class="delete btn btn-success" data-bs-toggle="modal" data-bs-target="#Modalwindow" data-category-id=${item.name} ><i class='bx bx-book-add' ></i></button>
+                        <button class="delete category-delete  btn btn-danger" data-delete="${item.id}" data-category-id="${item.name}"><i class='bx bx-trash-alt'></i></button>
                         </th>
                       </tr>
                     </thead>
@@ -50,6 +50,14 @@ async function fetchProductTypes() {
                 const row = button.closest('tr');
                 row.remove();
             }
+            if (event.target.closest('.delete')) {
+                const button = event.target.closest('.delete');
+                const typeName = button.getAttribute('data-category-id'); // Получаем categoryId из кнопки
+                console.log('Переданный тип продукта:', typeName);
+        
+                // Заполняем скрытое поле для типа продукта в модальном окне
+                document.getElementById('typename').value = typeName;
+            }
             if (event.target.closest('.category-delete')) {
                 const button = event.target.closest('.category-delete');
                 const categoryId = button.getAttribute('data-delete');
@@ -60,9 +68,6 @@ async function fetchProductTypes() {
             }
             if(event.target.closest('.change-button')){
                 const button= event.target.closest('.change-button');
-
-                
-
                 const row = button.closest('tr');
                 const name = row.cells[1].innerText;
                 const price = row.cells[2].innerText;
@@ -76,6 +81,64 @@ async function fetchProductTypes() {
                 document.getElementById('time').value = time;
             }
         });
+        let Modal = new bootstrap.Modal(document.getElementById('Modalwindow'), {
+            keyboard: false
+        });
+       
+        document.querySelector('button.confirm').addEventListener('click', function(e) {
+            let name = document.getElementById('name').value;
+            let price = document.getElementById('price').value;
+            let description = document.getElementById('description').value;
+            let img = document.getElementById('image').files[0]; // Получаем выбранный файл
+            let cookingTime= document.getElementById('time').value;
+            let typeName = document.getElementById('typename').value;
+            if (name && price && description) {
+                // Все поля заполнены, можно обрабатывать данные
+                console.log('Название:', name);
+                console.log('Цена:', price);
+                console.log('Описание:', description);
+                console.log('Изображение:', img);
+        
+                // Очистка полей формы
+                document.getElementById('name').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('image').value = '';
+                document.getElementById('time').value = '';
+        
+                // Закрыть модальное окно
+                Modal.hide();
+        
+                let newProduct={
+                    name: name,
+                    price: price,
+                    typeName: typeName,
+                    description: description,
+                    cookingTime: cookingTime
+                };
+                
+                const formData=new FormData(); 
+                formData.append('name', newProduct.name);
+                formData.append('description', newProduct.description);
+                formData.append('typeid', newProduct.typeName);
+                formData.append('price', newProduct.price);
+                formData.append('cookingTime', newProduct.cookingTime);
+                formData.append('file', img);
+                
+
+                
+                fetch('http://localhost:9091/api/v1/products', {
+                    method: 'POST',
+                    body: formData
+                  })
+                  .then(response => response.json())
+                  .then(data => console.log('Success:', data))
+                  .catch(error => console.error('Error:', error));
+            } else {
+                alert('Пожалуйста, заполните все поля');
+            }
+        });
+        
         
       } else {
         console.error('Неверный формат данных:', data);
@@ -147,39 +210,3 @@ async function deleteCategory(categoryId) {
 }
 
 fetchProductTypes();
-let Modal = new bootstrap.Modal(document.getElementById('Modalwindow'), {
-    keyboard: false
-});
-
-document.querySelector('button.confirm').addEventListener('click', function(e) {
-    let name = document.getElementById('name').value;
-    let price = document.getElementById('price').value;
-    let description = document.getElementById('description').value;
-    let img = document.getElementById('image').files[0]; // Получаем выбранный файл
-
-    if (name && price && description) {
-        // Все поля заполнены, можно обрабатывать данные
-        console.log('Название:', name);
-        console.log('Цена:', price);
-        console.log('Описание:', description);
-        console.log('Изображение:', img);
-
-        // Очистка полей формы
-        document.getElementById('name').value = '';
-        document.getElementById('price').value = '';
-        document.getElementById('description').value = '';
-        document.getElementById('image').value = '';
-
-        // Закрыть модальное окно
-        Modal.hide();
-
-        let newProduct={
-            name: name,
-            price: price,
-            description: description,
-            cookingTime: cookingTime
-        }
-    } else {
-        alert('Пожалуйста, заполните все поля');
-    }
-});
