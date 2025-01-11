@@ -1,0 +1,32 @@
+.categorylist{
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.one-category{
+    opacity: 0.9;
+    border-radius: 6px;
+    color: black;
+    margin-top: 70px;
+    margin-bottom: 40px;
+    padding: 40px;
+    box-shadow: 3px 10px 10px 4px rgba(0, 0, 0, 0.5);
+    width: 75%;
+}
+.category-items th, .category-items td {
+    max-width: 150px;  /* ширина ячейки */
+    overflow: hidden; /* Скрытие переполненного содержимого */
+    text-overflow: ellipsis; /* Добавление многоточия при переполнении */
+    white-space: nowrap; /* Запрет переноса текста */
+}
+
+
+
+.category-items .btn {
+    margin: 0 5px; /* Устанавливает отступы между кнопками */
+}
+.allbuttons{
+    display: flex;
+    width: 80%;
+}
