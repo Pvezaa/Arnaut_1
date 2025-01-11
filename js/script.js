@@ -356,7 +356,7 @@ async function fetchMenuItems(categoryIds) {
           const photoResponse = await fetch(`http://localhost:9091/api/v1/photos/product/${item.id}`);
           const photoData = await photoResponse.json();
           const imageUrl = 'http://localhost:9091/api/v1/photos/resource?photoPath='+photoData[0]?.url || 'default.jpg'; // Если нет URL, используем картинку по умолчанию
-
+          
           // Создаем элемент меню
           const menuItem = document.createElement('div');
           menuItem.className = `col-sm-6 col-md-4 col-lg-4 item ${id} `;
@@ -412,7 +412,7 @@ function updateModal(order) {
           <td style="text-align: center;">${order[i].tovarname}</td>
           <td style="text-align: center;">${order[i].price}</td>
           <td style="text-align: center;">${order[i].quantity}</td>
-          <td style="text-align: center;"><button class="delete btn btn-danger" data-delete="${order[i].id}" data-price="${order[i].price}"><i class='bx bx-trash-alt'></i></button></td>
+          <td style="text-align: center;"><button class="delete btn btn-danger" data-delete="${order[i].id}"  data-price="${order[i].price}"><i class='bx bx-trash-alt'></i></button></td>
         </tr>
         
       `);
@@ -429,7 +429,7 @@ function updateModal(order) {
         // Получаем ID товара для удаления
         const itemId = e.target.closest("button").dataset.delete;
         const price = parseFloat(button.dataset.price);
-        console.log(price);
+        
         let totalcost=JSON.parse(localStorage.getItem('totalcost'));
         totalcost-=price;
         localStorage.setItem('totalcost', JSON.stringify(totalcost));
@@ -714,16 +714,17 @@ document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
               but.classList.add("sold");
               let order=JSON.parse(localStorage.getItem('order'));
               console.log(order);
+              console.log(itemCost);
               // Находим поле ввода количества
               const plusmin = but.closest(".send-but"); 
               if(plusmin){
                   let totalcost=JSON.parse(localStorage.getItem('totalcost'));
                   const input = plusmin.querySelector("input"); 
                   let quantity = parseInt(input.value, 10);
-                  totalcost +=parseFloat(itemCost, 10);
+                  totalcost +=quantity*parseFloat(itemCost, 10);
                   console.log(order.length);
                   // Добавляем заказ в массив
-                  order.push({ id:order.length, tovarname:itemName, quantity:quantity, price:parseFloat(itemCost)});
+                  order.push({ id:order.length, tovarname:itemName, quantity:quantity, price:parseFloat(itemCost)*quantity});
                   console.log(order);
                   console.log(totalcost);
                   localStorage.setItem('order', JSON.stringify(order));
@@ -781,10 +782,10 @@ document.querySelector('body').style.backgroundImage="url(./img/dinner.jpg)";
                     let totalcost=JSON.parse(localStorage.getItem('totalcost'));
                     const input = plusmin.querySelector("input"); 
                     let quantity = parseInt(input.value, 10);
-                    totalcost +=parseFloat(itemCost, 10);
+                    totalcost +=parseFloat(onlyItem[1], 10);
                     console.log(order.length);
                     // Добавляем заказ в массив
-                    order.push({ id:order.length, tovarname:itemName, quantity:quantity, price:parseFloat(itemCost)});
+                    order.push({ id:order.length, tovarname:onlyItem[0], quantity:quantity, price:parseFloat(onlyItem[1])});
                     console.log(order);
                     console.log(totalcost);
                     localStorage.setItem('order', JSON.stringify(order));
