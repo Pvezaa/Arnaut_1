@@ -25,8 +25,8 @@ async function fetchProductTypes() {
                         <th style="text-align: center;">Время готовки</th>
                         <th style="text-align: center;">Изображение</th>
                         <th class="allbuttons">
-                        <button class="delete btn btn-success" data-bs-toggle="modal" data-bs-target="#Modalwindow" data-category-id=${item.name} ><i class='bx bx-book-add' ></i></button>
-                        <button class="delete category-delete  btn btn-danger" data-delete="${item.id}" data-category-id="${item.name}"><i class='bx bx-trash-alt'></i></button>
+                        <button class="delete btn btn-success" data-bs-toggle="modal" data-bs-target="#Modalwindow" data-category-id=${item.id} ><i class='bx bx-book-add' ></i></button>
+                        <button class="delete category-delete  btn btn-danger" data-delete="${item.id}" data-category-id="${item.id}"><i class='bx bx-trash-alt'></i></button>
                         </th>
                       </tr>
                     </thead>
@@ -93,11 +93,8 @@ async function fetchProductTypes() {
             let cookingTime= document.getElementById('time').value;
             let typeName = document.getElementById('typename').value;
             if (name && price && description) {
-                // Все поля заполнены, можно обрабатывать данные
-                console.log('Название:', name);
-                console.log('Цена:', price);
-                console.log('Описание:', description);
-                console.log('Изображение:', img);
+               
+                
         
                 // Очистка полей формы
                 document.getElementById('name').value = '';
@@ -107,7 +104,7 @@ async function fetchProductTypes() {
                 document.getElementById('time').value = '';
         
                 // Закрыть модальное окно
-                Modal.hide();
+                
         
                 let newProduct={
                     name: name,
@@ -116,24 +113,37 @@ async function fetchProductTypes() {
                     description: description,
                     cookingTime: cookingTime
                 };
-                
+                console.log(newProduct);
                 const formData=new FormData(); 
                 formData.append('name', newProduct.name);
                 formData.append('description', newProduct.description);
-                formData.append('typeid', newProduct.typeName);
+                formData.append('typeId', newProduct.typeName);
                 formData.append('price', newProduct.price);
                 formData.append('cookingTime', newProduct.cookingTime);
                 formData.append('file', img);
                 
 
-                
+                Modal.hide();
                 fetch('http://localhost:9091/api/v1/products', {
                     method: 'POST',
                     body: formData
-                  })
-                  .then(response => response.json())
-                  .then(data => console.log('Success:', data))
-                  .catch(error => console.error('Error:', error));
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        // Обработка ошибки на уровне HTTP
+                        throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+                    }
+                    return response.text().then(text => text ? JSON.parse(text) : {});
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    // уведомление о успехе
+                    Addtable(categoryIds);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // уведомление о неудаче
+                });
             } else {
                 alert('Пожалуйста, заполните все поля');
             }
