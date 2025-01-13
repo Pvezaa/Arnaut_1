@@ -200,6 +200,23 @@ async function deleteProduct(productId) {
         if (!response.ok) {
             throw new Error(`Ошибка при удалении продукта с ID ${productId}`);
         }
+        // Удаление изображения
+        const photoResponse = await fetch(`http://localhost:9091/api/v1/photos/product/${productId}`);
+        if (!photoResponse.ok) {
+            throw new Error(`Ошибка при получении изображения для продукта с ID ${productId}`);
+        }
+        const photoData = await photoResponse.json();
+        if (!photoData.length || !photoData[0].url) {
+            throw new Error(`Изображение для продукта с ID ${productId} не найдено`);
+        }
+        const imageresponse= await fetch('http://localhost:9091/api/v1/photos/resource?photoName='+photoData[0].url, {
+            method: 'DELETE',
+        })
+       
+        if (!imageResponse.ok) {
+            throw new Error(`Ошибка при удалении изображения для продукта с ID ${productId}`);
+        }
+        
         console.log(`Продукт с ID ${productId} успешно удален`);
     } catch (error) {
         console.error('Ошибка при удалении продукта:', error);

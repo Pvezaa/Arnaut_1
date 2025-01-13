@@ -355,6 +355,7 @@ async function fetchMenuItems(categoryIds) {
           // Запрос URL картинки
           const photoResponse = await fetch(`http://localhost:9091/api/v1/photos/product/${item.id}`);
           const photoData = await photoResponse.json();
+          console.log('http://localhost:9091/api/v1/photos/resource?photoName='+photoData[0].url);
           const imageUrl = 'http://localhost:9091/api/v1/photos/resource?photoName='+photoData[0]?.url || 'default.jpg'; // Если нет URL, используем картинку по умолчанию
           
           // Создаем элемент меню
