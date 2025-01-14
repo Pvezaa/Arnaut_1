@@ -158,7 +158,7 @@ async function fetchProductTypes() {
                 
                 const ischange=document.getElementById('ischange');
                 if(ischange.value.length>0){
-                    console.log("change")
+                   
                     let changeproduct={
                         id:ischange.value,
                         name:name,
@@ -167,12 +167,17 @@ async function fetchProductTypes() {
                         price:price,
                         cookingTime:cookingTime
                     };
+                    const formData=new FormData(); 
+                    formData.append("id",changeproduct.id);
+                    formData.append("name",changeproduct.name);
+                    formData.append("description",changeproduct.description);
+                    formData.append("typeId",changeproduct.typeId);
+                    formData.append("price",changeproduct.price);
+                    formData.append("cookingTime",changeproduct.cookingTime);
                     fetch('http://localhost:9091/api/v1/products', {
                         method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body:JSON.stringify(changeproduct)
+                        
+                        body:formData
                     }).then(res=>{
                         if(!res.ok){
                             throw new Error(`Ошибка: ${res.status} ${res.statusText}`);
