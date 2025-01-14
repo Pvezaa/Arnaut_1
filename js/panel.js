@@ -1,3 +1,4 @@
+
 async function fetchProductTypes() {
     try {
      
@@ -25,7 +26,7 @@ async function fetchProductTypes() {
                         <th style="text-align: center;">Время готовки</th>
                         <th style="text-align: center;">Изображение</th>
                         <th class="allbuttons">
-                        <button class="delete btn btn-success" data-bs-toggle="modal" data-bs-target="#Modalwindow" data-category-id=${item.id} ><i class='bx bx-book-add' ></i></button>
+                        <button class="delete category-btn btn btn-success" data-bs-toggle="modal" data-bs-target="#Modalwindow" data-category-id=${item.id} ><i class='bx bx-book-add' ></i></button>
                         <button class="delete category-delete  btn btn-danger" data-delete="${item.id}" data-category-id="${item.id}"><i class='bx bx-trash-alt'></i></button>
                         </th>
                       </tr>
@@ -68,6 +69,7 @@ async function fetchProductTypes() {
             }
             if(event.target.closest('.change-button')){
                 const button= event.target.closest('.change-button');
+                
                 const row = button.closest('tr');
                 const name = row.cells[1].innerText;
                 const price = row.cells[2].innerText;
@@ -79,6 +81,14 @@ async function fetchProductTypes() {
                 document.getElementById('price').value = price;
                 document.getElementById('description').value = description;
                 document.getElementById('time').value = time;
+                
+                // Получаем id что бы пониманать что за товар
+                const typename=button.closest('table').querySelector('.category-btn').getAttribute('data-category-id');
+                const itemid=button.getAttribute('data-delete');
+                // проверка на изменение
+                console.log(typename);
+                document.getElementById('ischange').value=`${itemid}`;
+                document.getElementById('typename').value = typename;
             }
         });
         let Modal = new bootstrap.Modal(document.getElementById('Modalwindow'), {
@@ -92,10 +102,8 @@ async function fetchProductTypes() {
             let img = document.getElementById('image').files[0]; // Получаем выбранный файл
             let cookingTime= document.getElementById('time').value;
             let typeName = document.getElementById('typename').value;
+            
             if (name && price && description) {
-               
-                
-        
                 // Очистка полей формы
                 document.getElementById('name').value = '';
                 document.getElementById('price').value = '';
@@ -106,13 +114,47 @@ async function fetchProductTypes() {
                 // Закрыть модальное окно
                 
         
+                
+                
+                const ischange=document.getElementById('ischange');
+                if(ischange.value.length>0){
+                    console.log("change")
+                    let changeproduct={
+                        id:ischange.value,
+                        name:name,
+                        description:description,
+                        typeId:typeName,
+                        price:price,
+                        cookingTime:cookingTime
+                    };
+                    fetch('http://localhost:9091/api/v1/products', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body:JSON.stringify(changeproduct)
+                    }).then(res=>{
+                        if(!res.ok){
+                            throw new Error(`Ошибка: ${res.status} ${res.statusText}`);
+                        }
+                        return res.text().then(text => text ? JSON.parse(text) : {});
+                    }).then(data=>{
+                        console.log('Success:', data);
+                        // уведомление о успехе
+                        Addtable(categoryIds);
+                    }).catch(errr=>{
+                        console.error('Error:', errr);
+                    });
+                    Modal.hide();
+                }
+                else{
                 let newProduct={
-                    name: name,
-                    price: price,
-                    typeName: typeName,
-                    description: description,
-                    cookingTime: cookingTime
-                };
+                        name: name,
+                        price: price,
+                        typeName: typeName,
+                        description: description,
+                        cookingTime: cookingTime
+                    };
                 console.log(newProduct);
                 const formData=new FormData(); 
                 formData.append('name', newProduct.name);
@@ -144,6 +186,8 @@ async function fetchProductTypes() {
                     console.error('Error:', error);
                     // уведомление о неудаче
                 });
+                }
+                
             } else {
                 alert('Пожалуйста, заполните все поля');
             }
