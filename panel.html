@@ -117,7 +117,7 @@
           </div>
         </nav>
       </header>
-      <h1 style="text-align: center">Категории</h1>
+      <h1 style="margin-top: 40px !important;">Категории <span class="add-category"><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Categorywindow"><i class='bx bx-plus-medical' style='color:#ffffff'  ></i></button></span></h1>
       <div class="container-fluid categorylist">
         <!-- Загружаем таблицу с каждой категорией -->
       </div>
@@ -204,7 +204,7 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h1>Добавить</h1>
+            <h1>Добавить Категорию</h1>
             <button
               type="button"
               class="btn-close"
@@ -214,35 +214,8 @@
           </div>
           <div class="modal-body">
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="name" />
-              <label for="name">Название</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="number" class="form-control" id="price" />
-              <label for="price">Цена</label>
-            </div>
-            <div class="form-floating mb-3">
-              <textarea
-                class="form-control"
-                placeholder="Leave a comment here"
-                id="description"
-              ></textarea>
-              <label for="description">Описание</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="time" step="1" class="form-control" id="time" />
-              <label for="time">Время готовки</label>
-            </div>
-            <div class="form-floating">
-              <input
-                type="file"
-                id="image"
-                name="image"
-                accept="image/jpeg, image/png, image/jpg"
-                class="form-control"
-                id="floatingInput m-3"
-              />
-              <label for="image">Изображение</label>
+              <input type="text" class="form-control" id="category-name" />
+              <label for="category-name">Название</label>
             </div>
             <input type="hidden" id="typename" />
             <input type="hidden" id="ischange" />
@@ -258,7 +231,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-success confirm"
+              class="btn btn-success category-confirm"
               style="font-size: 1.4rem"
             >
               Подтвердить
@@ -268,7 +241,7 @@
       </div>
     </div>
     </section>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/isotope-layout@3.0.6/dist/isotope.pkgd.min.js"></script>

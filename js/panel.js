@@ -44,13 +44,37 @@ async function fetchProductTypes() {
         await Addtable(categoryIds);
         document.querySelector('.categorylist').addEventListener('click', async (event) => {
             if (event.target.closest('.delete-item')) {
-                const button = event.target.closest('.btn-danger');
-                const productId = button.getAttribute('data-delete');
-                await deleteProduct(productId);
-                // Удаляем строку из таблицы
-                const row = button.closest('tr');
-                row.remove();
+                Swal.fire({
+                    title: "Вы уверены?",
+                    text: "Вы не сможете это востоновить!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#2F9262",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Да, удалить!",
+                    cancelButtonText:"Отмена!"
+                }).then(async (result) => {  // Добавляем async здесь
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Удалено!",
+                            text: "Элемент был удален.",
+                            icon: "success",
+                            confirmButtonColor: "#2F9262",
+                            confirmButtonText:"Ок"
+                        });
+            
+                        const button = event.target.closest('.btn-danger');
+                        const productId = button.getAttribute('data-delete');
+            
+                        await deleteProduct(productId);  // Используем await здесь
+            
+                        // Удаляем строку из таблицы
+                        const row = button.closest('tr');
+                        row.remove();
+                    }
+                });
             }
+            
             if (event.target.closest('.delete')) {
                 const button = event.target.closest('.delete');
                 const typeName = button.getAttribute('data-category-id'); // Получаем categoryId из кнопки
@@ -60,12 +84,33 @@ async function fetchProductTypes() {
                 document.getElementById('typename').value = typeName;
             }
             if (event.target.closest('.category-delete')) {
-                const button = event.target.closest('.category-delete');
+                Swal.fire({
+                    title: "Вы уверены?",
+                    text: "Вы не сможете это востоновить!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#2F9262",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Да, удалить!",
+                    cancelButtonText:"Отмена!"
+                }).then(async (result) => {  // Добавляем async здесь
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Удалено!",
+                            text: "Элемент был удален.",
+                            icon: "success",
+                            confirmButtonColor: "#2F9262",
+                            confirmButtonText:"Ок"
+                        });
+            
+                        const button = event.target.closest('.category-delete');
                 const categoryId = button.getAttribute('data-delete');
                 await deleteCategory(categoryId);
                 // Удаляем категорию (всю таблицу)
                 const categoryDiv = button.closest('.one-category');
                 categoryDiv.remove();
+                    }
+                });
             }
             if(event.target.closest('.change-button')){
                 const button= event.target.closest('.change-button');
@@ -110,11 +155,6 @@ async function fetchProductTypes() {
                 document.getElementById('description').value = '';
                 document.getElementById('image').value = '';
                 document.getElementById('time').value = '';
-        
-                // Закрыть модальное окно
-                
-        
-                
                 
                 const ischange=document.getElementById('ischange');
                 if(ischange.value.length>0){
@@ -192,7 +232,41 @@ async function fetchProductTypes() {
                 alert('Пожалуйста, заполните все поля');
             }
         });
-        
+        // Добавление новой категории
+        document.querySelector('.category-confirm').addEventListener('click', function(e){
+            const newcategory=document.querySelector('#category-name');
+            if(newcategory){
+                console.log(newcategory.value)
+                let cat={
+                    name: newcategory.value
+                }
+                let Modal = new bootstrap.Modal(document.getElementById('Modalwindow'), {
+                    keyboard: false
+                });
+                Modal.hide();
+                fetch('http://localhost:9091/api/v1/product-types',{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body:JSON.stringify(cat)
+                }).then(res=>{
+                    if(!res.ok){
+                         // Обработка ошибки на уровне HTTP
+                         throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+                    }
+                    return res.text().then(text => text ? JSON.parse(text) : {});
+                }).then(data=>{
+                    console.log('Success:', data);
+                    fetchProductTypes();
+                    // уведомление о успехе
+                    
+                }).catch(err=>{
+                    console.error('Error:', err);
+                });
+            }
+            else{
+                alert('Пожалуйста, заполните все поля');
+            }
+        });
         
       } else {
         console.error('Неверный формат данных:', data);
