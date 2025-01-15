@@ -139,7 +139,15 @@ async function fetchProductTypes() {
         let Modal = new bootstrap.Modal(document.getElementById('Modalwindow'), {
             keyboard: false
         });
-       
+    //    обнуление входных в модальном окете
+        document.querySelector('.category-btn').addEventListener('click', function(e){
+                document.getElementById('name').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('time').value = '';
+                document.getElementById('ischange').value=``;
+        });
+        // создание или редактирование нового товара
         document.querySelector('button.confirm').addEventListener('click', function(e) {
             let name = document.getElementById('name').value;
             let price = document.getElementById('price').value;
@@ -147,7 +155,9 @@ async function fetchProductTypes() {
             let img = document.getElementById('image').files[0]; // Получаем выбранный файл
             let cookingTime= document.getElementById('time').value;
             let typeName = document.getElementById('typename').value;
-            
+            if(cookingTime===''){
+                cookingTime='00:00:00';
+            }
             if (name && price && description) {
                 // Очистка полей формы
                 document.getElementById('name').value = '';
@@ -201,6 +211,7 @@ async function fetchProductTypes() {
                         cookingTime: cookingTime
                     };
                 console.log(newProduct);
+                console.log(cookingTime);
                 const formData=new FormData(); 
                 formData.append('name', newProduct.name);
                 formData.append('description', newProduct.description);

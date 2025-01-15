@@ -368,7 +368,9 @@ async function fetchMenuItems(categoryIds) {
             <a href="#item-${item.id}">
               <div class="description">
               <h3><b>${item.description}</b></h3>
-                  <h5>${item.cookingTime ? `Примерное время готовки: <b>${formatTime(item.cookingTime)}</b>` : "Сразу"}</h5>
+                  <h5>${item.cookingTime && item.cookingTime !== '00:00:00' 
+                    ? `Примерное время готовки: <b>${formatTime(item.cookingTime)}</b>` 
+                    : "Сразу"}</h5>
               </div>
               </a>
               <img src="${imageUrl}" alt="${item.name}" />
